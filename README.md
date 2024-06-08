@@ -16,6 +16,6 @@ Javascript, React
 ## Iterations:
 
 ### V1.0.0: 
-- enable users to complete a quiz
-- generate insights based on quiz
-- provide users with outfits that match their style (think pinterest inspiration board meets tinder) (+ links to purchase)
+- quiz completion: Enable users to complete a style quiz.
+- insights generation: Generate personalized insights based on quiz results.
+- outfit recommendation: Provide users with outfit suggestions that match their style, combining the inspiration of Pinterest with the swipe functionality of Tinder, and including links to purchase the items.
