@@ -1,2 +1,2 @@
-# todo: scrape aesthetics from pinterest and save to respective named folders to have trainable data for
-# our ML model
+# scrape aesthetics from pinterest and save to respective named folders to have trainable data for our ML model
+# required local library: pip install requests beautifulsoup4 pillow selenium webdriver-manager
