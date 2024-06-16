@@ -1,8 +1,8 @@
-# FashionForecast
+# What Am I Wearing Today
 
 ## Overview: 
 
-FashionForecast is your AI-powered personal style assistant. Evlevate your style by taking a quick quiz, where we'll identify your personal aesthetic and find outfit inspiration that's just 1 click away!
+WAIWT is your AI-powered personal style assistant. Evlevate your style by taking a quick quiz, where we'll identify your personal aesthetic and find outfit inspiration that's just 1 click away!
 
 ## Tech Stack:
 
