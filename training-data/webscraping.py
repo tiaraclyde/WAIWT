@@ -1,5 +1,4 @@
 #command line: pip3 install requests beautifulsoup4 pillow selenium webdriver-manager
-
 import os
 import requests
 from bs4 import BeautifulSoup
@@ -10,12 +9,10 @@ from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
 import time
 
-# Create directory if it doesn't exist
 def create_directory(directory):
     if not os.path.exists(directory):
         os.makedirs(directory)
 
-# Function to download an image from a URL
 def download_image(url, folder, count):
     try:
         response = requests.get(url)
@@ -26,13 +23,12 @@ def download_image(url, folder, count):
     except Exception as e:
         print(f"Failed to download {url}: {e}")
 
-# Function to scrape Pinterest for a given style
 def scrape_pinterest_style(style, folder, max_images=100):
     search_url = f"https://www.pinterest.com/search/pins/?q={style}"
     
     driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
     driver.get(search_url)
-    time.sleep(5)  # Wait for the page to load
+    time.sleep(5)
     
     soup = BeautifulSoup(driver.page_source, 'html.parser')
     img_tags = soup.find_all('img', {'src': True})
@@ -48,7 +44,6 @@ def scrape_pinterest_style(style, folder, max_images=100):
     
     driver.quit()
 
-# Main function to scrape multiple styles
 def main():
     base_folder = os.path.dirname(os.path.abspath(__file__))
     styles = ["clean girl aesthetic style inspo", "stockholm style inspo", "cottagecore style inspo", "alt style inspo", "streetstyle inspo", "preppy style inspo"]
