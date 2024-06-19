@@ -1,4 +1,3 @@
-#command line: pip3 install requests beautifulsoup4 pillow selenium webdriver-manager
 import os
 import requests
 from bs4 import BeautifulSoup
@@ -9,10 +8,12 @@ from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
 import time
 
+# Create directory if it doesn't exist
 def create_directory(directory):
     if not os.path.exists(directory):
         os.makedirs(directory)
 
+# Function to download an image from a URL
 def download_image(url, folder, count):
     try:
         response = requests.get(url)
@@ -23,30 +24,46 @@ def download_image(url, folder, count):
     except Exception as e:
         print(f"Failed to download {url}: {e}")
 
-def scrape_pinterest_style(style, folder, max_images=100):
+# Function to scrape Pinterest for a given style
+def scrape_pinterest_style(style, folder, min_images=50):
     search_url = f"https://www.pinterest.com/search/pins/?q={style}"
-    
     driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
     driver.get(search_url)
-    time.sleep(5)
+    scroll_pause_time = 2  # Pause to allow images to load
+    last_height = driver.execute_script("return document.body.scrollHeight")
     
-    soup = BeautifulSoup(driver.page_source, 'html.parser')
-    img_tags = soup.find_all('img', {'src': True})
+    img_urls = set()
+    
+    while len(img_urls) < min_images:
+        driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+        time.sleep(scroll_pause_time)
+        soup = BeautifulSoup(driver.page_source, 'html.parser')
+        img_tags = soup.find_all('img', {'src': True})
+        
+        for img_tag in img_tags:
+            img_url = img_tag['src']
+            if img_url.startswith('http'):
+                img_urls.add(img_url)
+            if len(img_urls) >= min_images:
+                break
+        new_height = driver.execute_script("return document.body.scrollHeight")
+        if new_height == last_height:
+            break
+        last_height = new_height
+    
+    driver.quit()
     
     create_directory(folder)
     
-    for count, img_tag in enumerate(img_tags):
-        if count >= max_images:
+    # Download images
+    for count, img_url in enumerate(img_urls):
+        if count >= min_images:
             break
-        img_url = img_tag['src']
-        if img_url.startswith('http'):
-            download_image(img_url, folder, count)
-    
-    driver.quit()
+        download_image(img_url, folder, count)
 
 def main():
     base_folder = os.path.dirname(os.path.abspath(__file__))
-    styles = ["clean girl aesthetic style inspo", "stockholm style inspo", "cottagecore style inspo", "alt style inspo", "streetstyle inspo", "preppy style inspo"]
+    styles = ["clean girl aesthetic", "stockholm style", "cottagecore aesthetic style", "alt aesthetic style", "streetstyle outfits", "preppy style outfits"]
     
     for style in styles:
         folder_path = os.path.join(base_folder, style.replace(" ", "_"))
