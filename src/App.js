@@ -1,13 +1,13 @@
-
 import './App.css';
+import LogIn from './components/LogIn';
 
 function App() {
-  return (
-    <h1>
-      WAIWT Login
-    </h1>
-    
 
+  return (
+    <>
+    <LogIn/>
+    
+  </>
 
   );
 }
